@@ -1,16 +1,18 @@
 package afuera.core;
 
+import java.io.File;
+
 public class FileConfig {
-	public static final String DOC_API_EXCEPTION = "res/doc_api_exception.txt";
-	public static final String DOC_API_PACKAGE = "res/doc_api_package.txt";
-	public static final String FRAMEWORK_JAR = "res/framework.jar";
-	public static final String PARAMETER_THROW_OUTCOMES = "flow/";
-	public static final String PARAMETER_THROW_OUTCOMES_TEMP = "flowTemp/";
-	public static final String API_LIST_FRAMEWORK = "res/GeneratedAPIList.txt";
-	public static final String UE_API = "out/ue_api.txt";
-	public static final String ALL_API = "out/all_api.txt";
-	public static final String IMPLICATION_api = "res/implication_api.txt";
-	public static final String MAC_ANDROID_PLATFORM = "";//
-	public static final String SERVER_ANDROID_PLATFORM = "~/libs/android-platforms/";
-	public static final String CLASSES_DEX = "res/classes.dex";
+	public static final String API_LEVEL = "res/"+"api19/"; //can change to api20, api29 etc
+	public static final String DOC_API_EXCEPTION = API_LEVEL + "doc_api_exception.txt";
+	public static final String DOC_API_PACKAGE = API_LEVEL + "doc_api_package.txt";
+	public static final String FRAMEWORK_JAR = API_LEVEL + "framework-generated.jar";
+	public static final String PARAMETER_THROW_OUTCOMES = API_LEVEL + "flow/";
+	public static final String PARAMETER_THROW_OUTCOMES_TEMP = API_LEVEL + "flowTemp/";
+	public static final String API_LIST_FRAMEWORK = API_LEVEL + "GeneratedAPIList.txt";
+	public static final String UE_API = API_LEVEL + "ue_api.txt";
+	public static final String ALL_API = API_LEVEL + "all_api.txt";
+	public static final String IMPLICATION_api = API_LEVEL + "implication_api.txt";
+	public static final String MAC_ANDROID_PLATFORM = "../../playground/jars/android-platforms/";//path dependent on my develop environment
+	public static final String SERVER_ANDROID_PLATFORM = "~/libs/android-platforms/"; //path dependent on my server test environment
 }

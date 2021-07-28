@@ -11,8 +11,11 @@ import soot.Scene;
 import soot.SootMethod;
 import soot.jimple.infoflow.InfoflowConfiguration;
 import soot.jimple.infoflow.InfoflowConfiguration.CallgraphAlgorithm;
+import soot.jimple.infoflow.InfoflowConfiguration.PathBuildingAlgorithm;
+import soot.jimple.infoflow.InfoflowConfiguration.PathReconstructionMode;
 import soot.jimple.infoflow.config.IInfoflowConfig;
 import soot.options.Options;
+
 
 public class FlowConfig implements IInfoflowConfig{
 
@@ -41,5 +44,14 @@ public class FlowConfig implements IInfoflowConfig{
 	    Options.v().set_validate(true); // Validate Jimple bodies in each transofrmation pack
 		options.set_include_all(true);//I want all classes in framework to be studied, for now
 		Scene.v().loadNecessaryClasses();
+		//in order to obtain path
+		/*
+		 * Contexsensitive reconstructing path
+		 */
+		config.getPathConfiguration().setPathBuildingAlgorithm(PathBuildingAlgorithm.ContextSensitive);
+		/*
+		 * Fast reconstructing the path
+		 */
+		config.getPathConfiguration().setPathReconstructionMode(PathReconstructionMode.Fast);
 	}
 }

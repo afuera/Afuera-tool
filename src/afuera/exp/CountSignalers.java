@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 
 import afuera.core.FileConfig;
-import afuera.core.Main;
 import afuera.core.Signaler;
 import afuera.core.ThrowClause;
 import afuera.preprocess.apiparsing.Parse;

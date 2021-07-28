@@ -134,11 +134,12 @@ public class CountStackTraces {
 //			return;
 //		}
 		StackFrame caller = path.get(path.size()-1);
-		if(hasDuplicate(caller)) {
+//		if(hasDuplicate(caller)) {
+		if(hasDuplicate(path)) {
 			return;
-		}else {
+		}/*else {
 			this.touchedStackFrame.add(caller);
-		}
+		}*/
 		if(caller.handledPassedException()) {
 			//this.handledCount+=caller.handledCount;
 			this.handledCount += (caller.targetUnits.size()-caller.unHandledUnits.size());
@@ -151,9 +152,9 @@ public class CountStackTraces {
 		/**
 		 * If (caller,exception) is documented, no need to continue;
 		 */
-//		if(path.size()>7) {
-//			return;
-//		}
+		if(path.size()>4) {
+			return;
+		}
 		Iterator<MethodOrMethodContext> sources = new Sources(cg.edgesInto((caller.stackFrameMethod))); 
 //		boolean debug = false;
 //		if(caller.stackFrameMethod.getSignature().equals("<android.app.Instrumentation: android.app.Instrumentation$ActivityResult execStartActivity(android.content.Context,android.os.IBinder,android.os.IBinder,android.app.Activity,android.content.Intent,int,android.os.Bundle)>"))
