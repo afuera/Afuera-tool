@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import afuera.core.FileConfig;
+import afuera.flow.config.FileConfig;
 import soot.G;
 import soot.PackManager;
 import soot.Scene;

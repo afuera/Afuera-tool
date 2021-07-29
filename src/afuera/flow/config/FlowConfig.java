@@ -3,7 +3,6 @@ package afuera.flow.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import afuera.core.FileConfig;
 import afuera.core.Signaler;
 import afuera.preprocess.apiparsing.SelfAPIList;
 import soot.G;

@@ -2,9 +2,9 @@ package afuera.exp;
 
 import java.io.IOException;
 
-import afuera.core.FileConfig;
 import afuera.core.TaintProcessStackTrace;
 import afuera.flow.analysis.FlowAnalysis;
+import afuera.flow.config.FileConfig;
 import afuera.instrumentation.JarInstrumenter;
 
 public class TaintParameterThrowClause {

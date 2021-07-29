@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import afuera.core.FileConfig;
 import afuera.core.ProcessStackTrace;
 import afuera.core.Signaler;
 import afuera.core.StackFrame;
 import afuera.exp.CountSignalers.ThrowCount;
+import afuera.flow.config.FileConfig;
 import afuera.preprocess.apiparsing.Parse;
 import afuera.preprocess.apiparsing.SelfAPIList;
 import soot.AmbiguousMethodException;
@@ -203,7 +203,7 @@ public class CountStackTraces {
 			}
 		});
 		int others = 0;
-		BufferedWriter bw = new BufferedWriter(new FileWriter("paper/apiPerpackage.csv"));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(FileConfig.STAT_API_PER_PACKAGE));
 		bw.write("type,count,per");
 		bw.newLine();
 		double total = 0d;
@@ -346,7 +346,7 @@ public class CountStackTraces {
 			}
 		});
 		int others = 0;
-		BufferedWriter bw = new BufferedWriter(new FileWriter("paper/apiPerexception.csv"));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(FileConfig.STAT_API_PER_EXCEPTION));
 		bw.write("type,count,per");
 		bw.newLine();
 		double total = 0d;

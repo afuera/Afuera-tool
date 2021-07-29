@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import afuera.core.FileConfig;
 import afuera.core.Signaler;
 import afuera.core.ThrowClause;
+import afuera.flow.config.FileConfig;
 import afuera.preprocess.apiparsing.Parse;
 import afuera.preprocess.apiparsing.SelfAPIList;
 import soot.AmbiguousMethodException;
@@ -137,7 +137,7 @@ public class CountSignalers {
 		});
 		int others = 0;
 		double total = 0d;
-		BufferedWriter bw = new BufferedWriter(new FileWriter("paper/signalerPerexception.csv"));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(FileConfig.STAT_SIGNALER_PER_EXCEPTION));
 		bw.write("type,count,per");
 		bw.newLine();
 		for(ThrowCount throwCount : list) {
@@ -190,7 +190,7 @@ public class CountSignalers {
 			}
 			
 		});
-		BufferedWriter bw = new BufferedWriter(new FileWriter("paper/signalerPerpackage.csv"));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(FileConfig.STAT_SIGNALER_PER_PACKAGE));
 		bw.write("type,count,per");
 		bw.newLine();
 		int rank = 0;

@@ -1,7 +1,7 @@
 package afuera.exp;
 
-import afuera.core.FileConfig;
 import afuera.flow.analysis.FlowAnalysis;
+import afuera.flow.config.FileConfig;
 import afuera.instrumentation.JarInstrumenter;
 
 public class TaintParameterThrowClauseTest {

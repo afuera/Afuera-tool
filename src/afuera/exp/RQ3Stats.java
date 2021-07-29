@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import afuera.core.FileConfig;
 import afuera.core.Signaler;
 import afuera.core.StackFrame;
+import afuera.flow.config.FileConfig;
 import afuera.preprocess.apiparsing.SelfAPIList;
 import soot.G;
 import soot.PackManager;

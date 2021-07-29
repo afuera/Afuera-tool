@@ -1,4 +1,4 @@
-#! /usr//bin/python3
+#! /usr/bin/python3
 import os.path
 # Please contact https://androzoo.uni.lu to ask for your personal key.
 key = ''

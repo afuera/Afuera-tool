@@ -1,2 +1,5 @@
 res
+target
 .DS_Store
+bin
+script/.idea/workspace.xml

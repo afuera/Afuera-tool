@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import afuera.core.FileConfig;
+import afuera.flow.config.FileConfig;
 import afuera.flow.config.FlowConfig;
 import afuera.instrumentation.JarInstrumenter;
 import soot.RefType;

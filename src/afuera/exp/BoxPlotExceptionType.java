@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import afuera.core.FileConfig;
+import afuera.flow.config.FileConfig;
 import soot.SootClass;
 
 public class BoxPlotExceptionType {

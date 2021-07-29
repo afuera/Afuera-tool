@@ -9,12 +9,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import afuera.core.Main;
+import afuera.flow.config.FileConfig;
 
 public class Jar2APIList {
 	public static void main(String args[]) throws IOException {
 		List<String> allPubClasses = new ArrayList<String>();
-		Process p = Runtime.getRuntime().exec("jar -tf res/framework.jar");
+		Process p = Runtime.getRuntime().exec("jar -tf "+FileConfig.FRAMEWORK_JAR);
 		BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line = null;
 		while((line=br.readLine())!=null) {
@@ -24,14 +24,14 @@ public class Jar2APIList {
 		}
 		br.close();
 		File toDelete = null;
-		if((toDelete = new File("res/GeneratedAPIList.txt")).exists())
+		if((toDelete = new File(FileConfig.API_LIST_FRAMEWORK)).exists())
 			toDelete.delete();
-		BufferedWriter bw = new BufferedWriter(new FileWriter(new File("res/GeneratedAPIList.txt"),true));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(FileConfig.API_LIST_FRAMEWORK),true));
 		for(String cName : allPubClasses) {
 			BufferedReader br1 = null;
 			cName = cName.substring(0, cName.length()-6);//remove .class 
 			//System.out.println(cName);
-			Process q = Runtime.getRuntime().exec("javap -classpath res/framework.jar "+cName);
+			Process q = Runtime.getRuntime().exec("javap -classpath "+FileConfig.FRAMEWORK_JAR+" "+cName);
 			br1 = new BufferedReader(new InputStreamReader(q.getInputStream()));
 			String methods = null;
 			br1.readLine();//to pass "Compiled from "....java"" line

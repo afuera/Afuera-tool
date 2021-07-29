@@ -11,8 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import afuera.core.FileConfig;
 import afuera.core.Signaler;
+import afuera.flow.config.FileConfig;
 import afuera.preprocess.apiparsing.SelfAPIList;
 import soot.Body;
 import soot.BodyTransformer;

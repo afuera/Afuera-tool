@@ -1,11 +1,13 @@
 package afuera.core;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import afuera.flow.config.FileConfig;
 import soot.G;
 import soot.PackManager;
 import soot.Scene;
@@ -25,7 +27,10 @@ public class WriteAllAPI {
 		Options.v().set_allow_phantom_refs(true);
 		Options.v().set_android_jars(FileConfig.MAC_ANDROID_PLATFORM);
 		List<String> processPaths = new ArrayList<String>();
-		processPaths.add(FileConfig.CLASSES_DEX);
+		for(File dex : new File(FileConfig.API_LEVEL).listFiles()) {
+			if(dex.toString().endsWith("dex"))
+				processPaths.add(dex.getAbsolutePath());
+		}
 		Options.v().set_process_dir(processPaths);
 		Options.v().set_app(true);
 		Options.v().set_src_prec(Options.src_prec_apk);

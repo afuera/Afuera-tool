@@ -1,9 +1,9 @@
-package afuera.core;
+package afuera.flow.config;
 
 import java.io.File;
 
 public class FileConfig {
-	public static final String API_LEVEL = "res/"+"api19/"; //can change to api20, api29 etc
+	public static final String API_LEVEL = "res/"+"api29/"; //can change to api20, api29 etc
 	public static final String DOC_API_EXCEPTION = API_LEVEL + "doc_api_exception.txt";
 	public static final String DOC_API_PACKAGE = API_LEVEL + "doc_api_package.txt";
 	public static final String FRAMEWORK_JAR = API_LEVEL + "framework-generated.jar";
@@ -14,5 +14,9 @@ public class FileConfig {
 	public static final String ALL_API = API_LEVEL + "all_api.txt";
 	public static final String IMPLICATION_api = API_LEVEL + "implication_api.txt";
 	public static final String MAC_ANDROID_PLATFORM = "../../playground/jars/android-platforms/";//path dependent on my develop environment
-	public static final String SERVER_ANDROID_PLATFORM = "~/libs/android-platforms/"; //path dependent on my server test environment
+	public static final String SERVER_ANDROID_PLATFORM = "libs/android-platforms/"; //path dependent on my server test environment
+	public static final String STAT_SIGNALER_PER_PACKAGE = API_LEVEL + "signalerPerpackage.csv";
+	public static final String STAT_SIGNALER_PER_EXCEPTION = API_LEVEL + "signalerPerexception.csv";
+	public static final String STAT_API_PER_EXCEPTION = API_LEVEL + "apiPerexception.csv";
+	public static final String STAT_API_PER_PACKAGE = API_LEVEL + "apiPerpackage.csv";
 }
