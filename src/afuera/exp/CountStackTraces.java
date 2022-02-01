@@ -288,6 +288,14 @@ public class CountStackTraces {
 		}
 		return list;
 	}
+	/**
+	 * TODO: Sort API by same api signature and number of unique exceptions.
+	 * @return 
+	 */
+	public List<API> sortByExceptions(List<API> unSorted){
+		
+		return null;
+	}
 	
 	public void documentAPIWithException() throws IOException {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(FileConfig.DOC_API_EXCEPTION)));
