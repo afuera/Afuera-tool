@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -103,7 +105,7 @@ public class CountStackTraces {
 		System.out.println("Total times an unchecked exception is trapped: "+this.handledCount);
 		rankAffectedAPIsByPackage(listOfPackageCount);
 		rankAffectedAPIsByException(this.listOfExceptionCount());
-		documentAPIWithException();
+		documentAPIWithException(true);
 		documentAPIWithPackage();
 		this.writedownAPIs(this.listOfAffectedAPIs(),FileConfig.UE_API);
 		
@@ -288,14 +290,54 @@ public class CountStackTraces {
 		}
 		return list;
 	}
-	/**
-	 * TODO: Sort API by same api signature and number of unique exceptions.
-	 * @return 
-	 */
-	public List<API> sortByExceptions(List<API> unSorted){
-		
-		return null;
+	public void documentAPIWithException(boolean sorted) throws IOException {
+		if(!sorted){
+			documentAPIWithException();
+			return;
+		}
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(FileConfig.DOC_API_EXCEPTION)));
+		BufferedWriter bwSampled = new BufferedWriter(new FileWriter(new File(FileConfig.SAMPLED_API_EXCEPTION)));
+		HashMap<String,List<String>> hm = new HashMap<String,List<String>>();
+		for(API api: this.listOfAffectedAPIWithException()){
+			if(hm.containsKey(api.api.getSignature())){
+				hm.get(api.api.getSignature()).add(api.thrownException.getName());
+			}else{
+				List<String> l = new ArrayList<String>();
+				l.add(api.thrownException.getName());
+				hm.put(api.api.getSignature(), l);
+			}
+		}
+		List<Map.Entry<String,List<String>>> list = new LinkedList<>(hm.entrySet());
+		Collections.sort(list, (i1, i2) -> Integer.compare(i1.getValue().size(), i2.getValue().size()));
+		int prev = 1;
+		int next = 1;
+		int line = 0;
+		try {
+			for(Map.Entry<String,List<String>> entry : list) {
+				next = entry.getValue().size();
+				if(next > prev){
+					System.out.println("APIs with "+prev+" Exceptions: "+line/prev);
+					prev = next;
+					line = 0;
+				}
+				for(String str : entry.getValue()){
+					if(line % 58 == 0){
+						bwSampled.write(",,,"+entry.getValue().size()+","+entry.getKey() + "-" + str);
+						bwSampled.newLine();
+					}
+					line++;
+					bw.write(entry.getKey() + "-" + str);
+					bw.newLine();
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		bw.close();
+		bwSampled.close();
 	}
+
 	
 	public void documentAPIWithException() throws IOException {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(FileConfig.DOC_API_EXCEPTION)));

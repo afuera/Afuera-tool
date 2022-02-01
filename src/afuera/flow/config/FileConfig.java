@@ -5,6 +5,7 @@ import java.io.File;
 public class FileConfig {
 	public static final String API_LEVEL = "res/"+"api29/"; //can change to api20, api29 etc
 	public static final String DOC_API_EXCEPTION = API_LEVEL + "doc_api_exception.txt";
+	public static final String SAMPLED_API_EXCEPTION = API_LEVEL + "sampled_api_exception.txt"; //sampled every 58 lines;
 	public static final String DOC_API_PACKAGE = API_LEVEL + "doc_api_package.txt";
 	public static final String FRAMEWORK_JAR = API_LEVEL + "framework-generated.jar";
 	public static final String PARAMETER_THROW_OUTCOMES = API_LEVEL + "flow/";
