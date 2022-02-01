@@ -62,7 +62,7 @@ public class CountStackTraces {
 	public void run(String args[], ProcessStackTrace processStackTrace) throws IOException {
 		G.reset();
 		Options.v().set_whole_program(true);
-		Options.v().set_allow_phantom_refs(true);;
+		Options.v().set_allow_phantom_refs(true); Options.v().setPhaseOption("cg.spark","enabled:true");
 		List<String> processPaths = new ArrayList<String>();		
 		Options.v().set_src_prec(Options.src_prec_class);
 		processPaths.add(FileConfig.FRAMEWORK_JAR);
