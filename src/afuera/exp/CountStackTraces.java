@@ -300,7 +300,9 @@ public class CountStackTraces {
 	public void documentAPIWithException() throws IOException {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(FileConfig.DOC_API_EXCEPTION)));
 			try {
-				for(API api : this.listOfAffectedAPIWithException()) {
+				List<API> toSort = this.listOfAffectedAPIWithException();
+				toSort.sort((API api1, API api2) -> api1.api.getSignature().compareTo(api2.api.getSignature()));
+				for(API api : toSort) {
 					bw.write(api.api.getSignature()+"-"+api.thrownException.getName());
 					bw.newLine();
 				}
