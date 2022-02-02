@@ -297,6 +297,7 @@ public class CountStackTraces {
 		}
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(FileConfig.DOC_API_EXCEPTION)));
 		BufferedWriter bwSampled = new BufferedWriter(new FileWriter(new File(FileConfig.SAMPLED_API_EXCEPTION)));
+		bwSampled.write("Officially_Documented $$$ Official_Document_URL $$$ Developer_Reported $$$ Developer_Report_URL $$$ Source_Checked $$$ Degree $$$ Signature");bwSampled.newLine();
 		HashMap<String,List<String>> hm = new HashMap<String,List<String>>();
 		for(API api: this.listOfAffectedAPIWithException()){
 			if(hm.containsKey(api.api.getSignature())){
@@ -322,7 +323,7 @@ public class CountStackTraces {
 				}
 				for(String str : entry.getValue()){
 					if(line % 58 == 0){
-						bwSampled.write(",,,"+entry.getValue().size()+","+entry.getKey() + "-" + str);
+						bwSampled.write(" $$$  $$$  $$$  $$$  $$$ "+entry.getValue().size()+" $$$"+entry.getKey() + "-" + str);
 						bwSampled.newLine();
 					}
 					line++;
