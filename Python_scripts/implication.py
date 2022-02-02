@@ -2,7 +2,7 @@
 import os.path
 # Please contact https://androzoo.uni.lu to ask for your personal key.
 key = ''
-topApp = "script/result.csv"
+topApp = "res/RQ2/result.csv"
 with open(topApp) as f:
     top = f.readlines()
 tops = []
@@ -11,7 +11,7 @@ for row in top:
     tops.append(row)
 top100 = tops[:200]
 print(top100)
-filename = "script/latest.csv"
+filename = "res/RQ2/latest.csv"
 with open(filename) as f:
     content = f.readlines()
 # you may also want to remove whitespace characters like `\n` at the end of each line
@@ -30,8 +30,8 @@ for row in content:
         sha256 = data[0]
         filename = packageName+'-'+year
         print(filename)
-        apkname = 'script/appTemp/'+filename+".apk"
-        imp_name = 'script/imp/'+filename+'.apk.txt'
+        apkname = 'res/RQ2/appTemp/'+filename+".apk"
+        imp_name = 'res/RQ2/imp/'+filename+'.apk.txt'
         if not os.path.isfile(imp_name):
             os.system("curl -o " + apkname + " -G -d apikey=" + key + " -d sha256=" + sha256 +
               " http://serval04.uni.lux/api/download")

@@ -9,7 +9,7 @@ result = app(
     country='us' # defaults to 'us'
 )
 print(result["installs"])
-filename = "latest.csv"
+filename = "res/RQ2/latest.csv"
 with open(filename) as f:
     content = f.readlines()
 content = [x.strip() for x in content]
@@ -38,7 +38,7 @@ for row in reversed(content):
                 most_downloads.append(line)
                 print(packageName)
                 print(ins)
-                with open('temp_result.csv', 'a') as temp:
+                with open('res/RQ2/temp_result.csv', 'a') as temp:
                     temp.write(line+'\n')
             else:
                 line = sha256+','+packageName+','+ins
@@ -47,6 +47,6 @@ for row in reversed(content):
                 print(ins)
         except:
             pass
-with open('result.csv', 'w') as myfile:
+with open('res/RQ2/result.csv', 'w') as myfile:
     myfile.writelines('%s\n' % track for track in most_downloads)
 
