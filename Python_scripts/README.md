@@ -12,4 +12,4 @@
 
 
 # Procedure
-## latest.csv --(topAPKs.py)--> temp_result.csv --(download.py)--> apps/*.apk --> 
+## latest.csv --(topAPKs.py)--> temp_result.csv + result.csv --(download.py)--> apps/*.apk --(lineage.py)--> ue/*.txt + all/*.txt --(implication.py)-->  
