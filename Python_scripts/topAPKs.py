@@ -1,4 +1,5 @@
 #! /usr/bin/python3
+#pip install google-play-scraper
 from google_play_scraper import app
 from google_play_scraper.exceptions import NotFoundError
 import csv

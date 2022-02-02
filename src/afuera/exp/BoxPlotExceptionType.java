@@ -17,13 +17,13 @@ import soot.SootClass;
 
 public class BoxPlotExceptionType {
 	public static void main(String args[]) throws IOException {
-		String ues = "script/ue/";
-		String alls= "script/all/";
+		//String ues = "res/RQ2/ue/";
+		//String alls= "res/RQ2/all/";
 		Map<String, Integer> map = new LinkedHashMap<String, Integer>();
 		boolean runitonce = true;
 		List<String> records = new ArrayList<String>();
 		int startSmall = 0;
-		for(File ue : new File(ues).listFiles()) {
+		for(File ue : new File(FileConfig.UE_USAGEs).listFiles()) {
 			/*
 			 * Put top 10 exception based on RQ1;
 			 */
@@ -41,8 +41,8 @@ public class BoxPlotExceptionType {
 				startSmall++;
 				if(startSmall > 200)
 					break;
-				double all_size = (double) read(alls+ue.getName()).size();
-				double ue_size = (double) read(ues+ue.getName()).size();
+				double all_size = (double) read(FileConfig.ALL_USAGEs+ue.getName()).size();
+				double ue_size = (double) read(FileConfig.UE_USAGEs+ue.getName()).size();
 				List<String> ueList = read(ue.getAbsolutePath());
 				List<String> ue_exceptionList = read(FileConfig.DOC_API_EXCEPTION);
 				for(String ueMethod : ueList) {
@@ -80,7 +80,7 @@ public class BoxPlotExceptionType {
 				System.out.println(records.size());
 			}
 		}
-		write("paper/exceptionboxplot.csv", records);
+		write(FileConfig.STAT_EXCEPTION_BOXPLOT, records);
 	}
 	public static List<String> read(String filePath) throws IOException{
 		List<String> apis = new ArrayList<String>();

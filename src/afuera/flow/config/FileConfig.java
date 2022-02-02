@@ -20,4 +20,12 @@ public class FileConfig {
 	public static final String STAT_SIGNALER_PER_EXCEPTION = API_LEVEL + "signalerPerexception.csv";
 	public static final String STAT_API_PER_EXCEPTION = API_LEVEL + "apiPerexception.csv";
 	public static final String STAT_API_PER_PACKAGE = API_LEVEL + "apiPerpackage.csv";
+
+	public static final String UE_USAGEs = "res/RQ2/ue/";
+	public static final String ALL_USAGEs = "res/RQ2/all/";
+
+	//.csv files
+	public static final String STAT_EXCEPTION_BOXPLOT = API_LEVEL + "exceptionboxplot.csv";
+	public static final String STAT_PACKAGE_BOXPLOT = API_LEVEL + "packageboxplot.csv";
+	public static final String STAT_YEAR_BOXPLOT = API_LEVEL + "yearboxplot.csv";
 }
