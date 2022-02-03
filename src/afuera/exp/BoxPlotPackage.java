@@ -27,15 +27,17 @@ public class BoxPlotPackage {
 			 * Put top 10 exception based on RQ1;
 			 */
 			map.put("android.widget", 0);
-			map.put("android.renderscript", 0);
 			map.put("android.app", 0);
 			map.put("android.view", 0);
 			map.put("android.content", 0);
-			map.put("android.webkit", 0);
-			map.put("android.provider", 0);
 			map.put("android.os", 0);
 			map.put("android.graphics", 0);
-			map.put("android.filterfw.core", 0);
+			map.put("android.provider", 0);
+			map.put("android.media",0);
+			map.put("android.renderscript", 0);
+			map.put("android.net", 0);
+			//map.put("android.webkit", 0);
+			//map.put("android.filterfw.core", 0);
 			if(ue.getName().endsWith("-2020.apk.txt")) {
 				startSmall++;
 				if(startSmall > 200)

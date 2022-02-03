@@ -32,11 +32,14 @@ public class BoxPlotExceptionType {
 			map.put("java.lang.IllegalStateException", 0);
 			map.put("java.lang.NullPointerException", 0);
 			map.put("java.lang.UnsupportedOperationException", 0);
-			map.put("android.content.res.Resources$NotFoundException",0);
-			map.put("java.lang.AssertionError", 0);
-			map.put("java.lang.IndexOutOfBoundsException", 0);
-			map.put("android.renderscript.RSInvalidStateException", 0);
+			map.put("java.util.ConcurrentModificationException",0);
+			//map.put("android.content.res.Resources$NotFoundException",0);
 			map.put("java.lang.ArrayIndexOutOfBoundsException", 0);
+			map.put("java.lang.IndexOutOfBoundsException", 0);
+			map.put("java.lang.AssertionError", 0);
+			map.put("java.lang.SecurityException", 0);
+			//map.put("android.renderscript.RSInvalidStateException", 0);
+
 			if(ue.getName().endsWith("-2020.apk.txt")) {
 				startSmall++;
 				if(startSmall > 200)
