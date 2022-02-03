@@ -26,6 +26,7 @@ import soot.jimple.InvokeStmt;
 
 public class FlowAnalysis {
 	public JarInstrumenter jarInstrumenter = null;
+	public int sampledID = -1;
 	public void run(JarInstrumenter jarInstrumenter, String appPath) {
 		this.jarInstrumenter = jarInstrumenter;
 		IInfoflow infoflow = null;
@@ -45,9 +46,13 @@ public class FlowAnalysis {
 			//results.printResults();
 			MultiMap<ResultSinkInfo, ResultSourceInfo> res = results.getResults();
 			try {
-				BufferedWriter bw = new BufferedWriter(new FileWriter(new File(FileConfig.PARAMETER_THROW_OUTCOMES_TEMP
-						+this.jarInstrumenter.smAPI.getDeclaringClass()+"."+this.jarInstrumenter.smAPI.getName())));
-				bw.write(this.jarInstrumenter.apiSignature);
+				String fileName = "";
+				if(this.sampledID == -1){
+					fileName = FileConfig.PARAMETER_THROW_OUTCOMES + this.jarInstrumenter.smAPI.getDeclaringClass()+"."+this.jarInstrumenter.smAPI.getName();
+				}else{
+					fileName = FileConfig.MODULE_II_SAMPLED_ANALYSIS_OUTCOME + this.sampledID;
+				}
+				BufferedWriter bw = new BufferedWriter(new FileWriter(new File(fileName)));				bw.write(this.jarInstrumenter.apiSignature);
 				bw.newLine();
 				bw.write(this.jarInstrumenter.signalerSignature);
 				bw.newLine();

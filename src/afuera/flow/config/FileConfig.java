@@ -9,6 +9,7 @@ public class FileConfig {
 	public static final String DOC_API_PACKAGE = API_LEVEL + "doc_api_package.txt";
 	public static final String FRAMEWORK_JAR = API_LEVEL + "framework-generated.jar";
 	public static final String PARAMETER_THROW_OUTCOMES = API_LEVEL + "flow/";
+	public static final String MODULE_II_SAMPLED_ANALYSIS_OUTCOME = API_LEVEL + "moduleII_Sampled/";
 	public static final String PARAMETER_THROW_OUTCOMES_TEMP = API_LEVEL + "flowTemp/";
 	public static final String API_LIST_FRAMEWORK = API_LEVEL + "GeneratedAPIList.txt";
 	public static final String UE_API = API_LEVEL + "ue_api.txt";
