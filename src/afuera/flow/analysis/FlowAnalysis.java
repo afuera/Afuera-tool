@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import afuera.flow.config.FileConfig;
 import afuera.flow.config.FlowConfig;
 import afuera.instrumentation.JarInstrumenter;
@@ -81,6 +83,14 @@ public class FlowAnalysis {
 			
 			
 		}
+	}
+
+	private void writeGSON(){
+		JSONObject json = new JSONObject();
+		json.put("UE-API",this.jarInstrumenter.apiSignature);
+		json.put("Signaler", this.jarInstrumenter.signalerSignature);
+		json.put("Unchecked Exception", this.jarInstrumenter.thrownExceptionName);
+		
 	}
 	
 	public IInfoflow initInfoflow(String appPath) {
