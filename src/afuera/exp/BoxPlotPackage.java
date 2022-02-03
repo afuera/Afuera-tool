@@ -42,7 +42,7 @@ public class BoxPlotPackage {
 				startSmall++;
 				if(startSmall > 200)
 					break;
-				double all_size = (double) read(FileConfig.ALL_USAGEs+ue.getName()).size();
+				//double all_size = (double) read(FileConfig.ALL_USAGEs+ue.getName()).size();
 				double ue_size = (double) read(FileConfig.UE_USAGEs+ue.getName()).size();
 				List<String> ueList = read(ue.getAbsolutePath());
 				List<String> ue_exceptionList = read(FileConfig.DOC_API_PACKAGE);
