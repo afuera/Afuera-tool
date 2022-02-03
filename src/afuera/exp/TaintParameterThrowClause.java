@@ -22,6 +22,8 @@ public class TaintParameterThrowClause {
 			/**
 			 * TODO: For all such lists, we want only the 100 (UE-API,UE) pairs sampled
 			 * in 			FileConfig.SAMPLED_API_EXCEPTION, first develop a matching , then dump all information.
+			 * We also want to using multithreading to accelerate the process. The bottleneck is not really the CPU,
+			 * it is the memory that limits us. For each thread, a considerable 32 GB ram is required at least.
 			 */
 
 			startSmall+=1;
