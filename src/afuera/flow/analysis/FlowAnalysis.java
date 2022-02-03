@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import afuera.core.StackFrame;
 import afuera.flow.config.FileConfig;
 import afuera.flow.config.FlowConfig;
 import afuera.instrumentation.JarInstrumenter;
@@ -37,8 +39,9 @@ public class FlowAnalysis {
 		infoflow = initInfoflow(appPath);
 		infoflow.setIPCManager(jarInstrumenter);
 		epoints.add(jarInstrumenter.apiSignature);
-		infoflow.computeInfoflow(appPath, libPath, epoints, jarInstrumenter.dummyParaMethods,jarInstrumenter.dummyIfConditionMethod);
-		checkInfoflow(infoflow);
+		this.writeGSON();
+		//infoflow.computeInfoflow(appPath, libPath, epoints, jarInstrumenter.dummyParaMethods,jarInstrumenter.dummyIfConditionMethod);
+		//checkInfoflow(infoflow);
 	}
 	
 	protected void checkInfoflow(IInfoflow infoflow){
@@ -86,11 +89,34 @@ public class FlowAnalysis {
 	}
 
 	private void writeGSON(){
+		String fileName = "";
+		if(this.sampledID == -1){
+			fileName = FileConfig.PARAMETER_THROW_OUTCOMES + this.jarInstrumenter.smAPI.getDeclaringClass()+"."+this.jarInstrumenter.smAPI.getName();
+		}else{
+			fileName = FileConfig.MODULE_II_SAMPLED_ANALYSIS_OUTCOME + this.sampledID;
+		}
+		if(new File(fileName).exists()){
+			return;
+		}
+
 		JSONObject json = new JSONObject();
 		json.put("UE-API",this.jarInstrumenter.apiSignature);
 		json.put("Signaler", this.jarInstrumenter.signalerSignature);
 		json.put("Unchecked Exception", this.jarInstrumenter.thrownExceptionName);
-		
+			JSONArray stackTraceJSON = new JSONArray();
+			for(StackFrame sf : this.jarInstrumenter.stackTrace){
+				stackTraceJSON.put(sf.stackFrameMethod.getSignature());
+			}
+		json.put("Stack Trace", stackTraceJSON);
+		BufferedWriter bw;
+		try {
+			bw = new BufferedWriter(new FileWriter(new File(fileName)));
+			bw.write(json.toString(2));
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 	
 	public IInfoflow initInfoflow(String appPath) {

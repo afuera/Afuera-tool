@@ -20,7 +20,7 @@ public class ModuleII {
 		TaintProcessStackTrace taintProcessStackTrace = new TaintProcessStackTrace();
 		cst.run(args, taintProcessStackTrace);
 		int size = taintProcessStackTrace.list.size();
-		System.out.println("Total (API,Signaler,Throw) tuple, where each API has at least one parameter, and there is condition guarding throw: "+size);
+		System.out.println("Total (API,Signaler,Throw) tuple, and there is condition guarding throw: "+size);
 		//Found 15072 such tuple. Given Confidence Level 0.95, Given Confidence Interval Size 10%, 
 		//we need to examine 96 cases.
 		int startSmall = 0;
@@ -33,7 +33,7 @@ public class ModuleII {
 			 * it is the memory that limits us. For each thread, a considerable 32 GB ram is required at least.
 			 */
 
-			if(startSmall>1)
+			if(startSmall>0)
 				break;
 			int sampledID = checkIfSampled(jarInstrumenter, sampledAPIExceptionMap);
 			if(-1 == sampledID || new File(FileConfig.MODULE_II_SAMPLED_ANALYSIS_OUTCOME+sampledID).exists()){
