@@ -1,7 +1,7 @@
 #! /usr/bin/python3
 import os.path
 # Please contact https://androzoo.uni.lu to ask for your personal key.
-key = ''
+key = 'b29928591d5e637f996c04a045ed839017471f92179052981e97cbd62461c2e6'
 topApp = "res/RQ2/result.csv"
 with open(topApp) as f:
     top = f.readlines()
@@ -36,6 +36,6 @@ for row in content:
             if not os.path.isfile(ue_name):
                 os.system("curl -o " + apkname + " -G -d apikey=" + key + " -d sha256=" + sha256 +
                   " http://serval04.uni.lux/api/download")
-                os.system("java -jar dynamite.jar "+apkname)
+                os.system("java -jar target/Afuera-tool.jar "+apkname)
                 os.system("rm "+apkname)
                 startsmall += 1

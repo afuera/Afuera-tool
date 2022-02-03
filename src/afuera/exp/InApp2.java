@@ -58,7 +58,7 @@ public class InApp2 {
 		List<String> ue_used = new ArrayList<String>();
 		List<String> all_used= new ArrayList<String>();
 		G.reset();
-		Options.v().set_whole_program(true);
+		Options.v().set_whole_program(true);Options.v().setPhaseOption("cg.spark","enabled:true");
 		Options.v().set_allow_phantom_refs(true);;
 		List<String> processPaths = new ArrayList<String>();		
 		Options.v().set_src_prec(Options.src_prec_apk);
@@ -78,7 +78,7 @@ public class InApp2 {
 
 			@Override
 			protected void internalTransform(final Body b, String phaseName, @SuppressWarnings("rawtypes") Map options) {
-				CallGraph cg = Scene.v().getCallGraph();
+				//CallGraph cg = Scene.v().getCallGraph();
 				final PatchingChain<Unit> units = b.getUnits();		
 				//important to use snapshotIterator here
 				for(Iterator<Unit> iter = units.snapshotIterator(); iter.hasNext();) {
@@ -109,8 +109,8 @@ public class InApp2 {
 		PackManager.v().runPacks();
 		G.reset();
 		try {
-			write("script/ue/"+app.getName()+".txt",ue_used);
-			write("script/all/"+app.getName()+".txt",all_used);
+			write(FileConfig.UE_USAGEs+app.getName()+".txt",ue_used);
+			write(FileConfig.ALL_USAGEs+app.getName()+".txt",all_used);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

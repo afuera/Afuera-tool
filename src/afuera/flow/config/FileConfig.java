@@ -15,7 +15,7 @@ public class FileConfig {
 	public static final String ALL_API = API_LEVEL + "all_api.txt";
 	public static final String IMPLICATION_api = API_LEVEL + "implication_api.txt";
 	public static final String MAC_ANDROID_PLATFORM = "../../playground/jars/android-platforms/";//path dependent on my develop environment
-	public static final String SERVER_ANDROID_PLATFORM = "libs/android-platforms/"; //path dependent on my server test environment
+	public static final String SERVER_ANDROID_PLATFORM = "res/android-platforms/"; //path dependent on my server test environment
 
 	public static final String UE_USAGEs = "res/RQ2/ue/";
 	public static final String ALL_USAGEs = "res/RQ2/all/";
