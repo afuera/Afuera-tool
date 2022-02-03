@@ -39,9 +39,8 @@ public class FlowAnalysis {
 		infoflow = initInfoflow(appPath);
 		infoflow.setIPCManager(jarInstrumenter);
 		epoints.add(jarInstrumenter.apiSignature);
-		this.writeGSON();
-		//infoflow.computeInfoflow(appPath, libPath, epoints, jarInstrumenter.dummyParaMethods,jarInstrumenter.dummyIfConditionMethod);
-		//checkInfoflow(infoflow);
+		infoflow.computeInfoflow(appPath, libPath, epoints, jarInstrumenter.dummyParaMethods,jarInstrumenter.dummyIfConditionMethod);
+		checkInfoflow(infoflow);
 	}
 	
 	protected void checkInfoflow(IInfoflow infoflow){
@@ -50,45 +49,13 @@ public class FlowAnalysis {
 			//System.out.println("Taint analysis results");
 			//results.printResults();
 			MultiMap<ResultSinkInfo, ResultSourceInfo> res = results.getResults();
-			try {
-				String fileName = "";
-				if(this.sampledID == -1){
-					fileName = FileConfig.PARAMETER_THROW_OUTCOMES + this.jarInstrumenter.smAPI.getDeclaringClass()+"."+this.jarInstrumenter.smAPI.getName();
-				}else{
-					fileName = FileConfig.MODULE_II_SAMPLED_ANALYSIS_OUTCOME + this.sampledID;
-				}
-				if(new File(fileName).exists()){
-					return;
-				}
-				BufferedWriter bw = new BufferedWriter(new FileWriter(new File(fileName)));				
-				bw.write(this.jarInstrumenter.apiSignature);
-				bw.newLine();
-				bw.write(this.jarInstrumenter.signalerSignature);
-				bw.newLine();
-				bw.write(this.jarInstrumenter.thrownExceptionName);
-				bw.newLine();
-				if(res!=null) {
-					for(ResultSinkInfo sink: res.keySet()) {
-						JInvokeStmt sinkStmt = (JInvokeStmt) sink.getStmt();
-						bw.write("Sink: "+sinkStmt.getInvokeExpr().getMethod().getName());
-						bw.newLine();
-						for(ResultSourceInfo source : res.get(sink)){
-							AssignStmt sourceStmt = (AssignStmt) source.getStmt();
-							bw.write("Source: "+sourceStmt.getInvokeExpr().getMethod().getName());
-							bw.newLine();
-						}
-					}
-				}
-				bw.close();
-			}catch(IOException e) {
-				e.printStackTrace();
-			}
-			
-			
+			this.writeGSON(res);
+		}else{
+			this.writeGSON(null);
 		}
 	}
 
-	private void writeGSON(){
+	private void writeGSON(MultiMap<ResultSinkInfo, ResultSourceInfo> res){
 		String fileName = "";
 		if(this.sampledID == -1){
 			fileName = FileConfig.PARAMETER_THROW_OUTCOMES + this.jarInstrumenter.smAPI.getDeclaringClass()+"."+this.jarInstrumenter.smAPI.getName();
@@ -108,6 +75,24 @@ public class FlowAnalysis {
 				stackTraceJSON.put(sf.stackFrameMethod.getSignature());
 			}
 		json.put("Stack Trace", stackTraceJSON);
+		/**
+		 * Write relevant parameters.
+		 */
+			JSONArray assertedRelevantParameters = new JSONArray();
+		if(res!=null) {
+			for(ResultSinkInfo sink: res.keySet()) {
+				//JInvokeStmt sinkStmt = (JInvokeStmt) sink.getStmt();
+				//bw.write("Sink: "+sinkStmt.getInvokeExpr().getMethod().getName());
+				//bw.newLine();
+				for(ResultSourceInfo source : res.get(sink)){
+					AssignStmt sourceStmt = (AssignStmt) source.getStmt();
+					//bw.write("Source: "+sourceStmt.getInvokeExpr().getMethod().getName());
+					assertedRelevantParameters.put(sourceStmt.getInvokeExpr().getMethod().getName().split("_")[2]);
+					//bw.newLine();
+				}
+			}
+		}
+		json.put("Afuera_asserted_parameters", assertedRelevantParameters);
 		BufferedWriter bw;
 		try {
 			bw = new BufferedWriter(new FileWriter(new File(fileName)));

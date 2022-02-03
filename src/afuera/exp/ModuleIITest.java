@@ -23,5 +23,6 @@ public class ModuleIITest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("dummy_Para_0".split("_")[2]);
 	}
 }

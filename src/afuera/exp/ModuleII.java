@@ -33,7 +33,7 @@ public class ModuleII {
 			 * it is the memory that limits us. For each thread, a considerable 32 GB ram is required at least.
 			 */
 
-			if(startSmall>0)
+			if(startSmall>200)
 				break;
 			int sampledID = checkIfSampled(jarInstrumenter, sampledAPIExceptionMap);
 			if(-1 == sampledID || new File(FileConfig.MODULE_II_SAMPLED_ANALYSIS_OUTCOME+sampledID).exists()){
