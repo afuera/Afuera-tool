@@ -52,6 +52,9 @@ public class FlowAnalysis {
 				}else{
 					fileName = FileConfig.MODULE_II_SAMPLED_ANALYSIS_OUTCOME + this.sampledID;
 				}
+				if(new File(fileName).exists()){
+					return;
+				}
 				BufferedWriter bw = new BufferedWriter(new FileWriter(new File(fileName)));				
 				bw.write(this.jarInstrumenter.apiSignature);
 				bw.newLine();

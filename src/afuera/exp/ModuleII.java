@@ -36,7 +36,7 @@ public class ModuleII {
 			if(startSmall>1)
 				break;
 			int sampledID = checkIfSampled(jarInstrumenter, sampledAPIExceptionMap);
-			if(-1 == sampledID){
+			if(-1 == sampledID || new File(FileConfig.MODULE_II_SAMPLED_ANALYSIS_OUTCOME+sampledID).exists()){
 				continue;
 			}
 			startSmall+=1;
