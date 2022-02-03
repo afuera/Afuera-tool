@@ -19,6 +19,11 @@ public class TaintParameterThrowClause {
 		//we need to examine 96 cases.
 		int startSmall = 0;
 		for(JarInstrumenter jarInstrumenter: taintProcessStackTrace.list) {
+			/**
+			 * TODO: For all such lists, we want only the 100 (UE-API,UE) pairs sampled
+			 * in 			FileConfig.SAMPLED_API_EXCEPTION, first develop a matching , then dump all information.
+			 */
+
 			startSmall+=1;
 			if(startSmall>96)
 				break;
