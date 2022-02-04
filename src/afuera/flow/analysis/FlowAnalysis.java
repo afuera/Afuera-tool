@@ -62,9 +62,9 @@ public class FlowAnalysis {
 		}else{
 			fileName = FileConfig.MODULE_II_SAMPLED_ANALYSIS_OUTCOME + this.sampledID;
 		}
-		if(new File(fileName).exists()){
-			return;
-		}
+		// if(new File(fileName).exists()){
+		// 	return;
+		// }
 
 		JSONObject json = new JSONObject();
 		json.put("UE-API",this.jarInstrumenter.apiSignature);
