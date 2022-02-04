@@ -4,3 +4,4 @@ target
 bin
 script/.idea/workspace.xml
 R/r_fig
+log
