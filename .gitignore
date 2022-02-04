@@ -3,5 +3,6 @@ target
 .DS_Store
 bin
 script/.idea/workspace.xml
-R/r_fig
+R_scripts/r_fig
 log
+sootOutput
