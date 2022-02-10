@@ -4,7 +4,7 @@ from time import sleep
 
 def afueraModuleII(number):
     sleep(5)
-    os.system("/usr/lib/jvm/java-11-openjdk-amd64/bin/java -jar target/multi-moduleII.jar")
+    os.system("/usr/lib/jvm/java-11-openjdk-amd64/bin/java -jar target/moduleII.jar")
 
 if __name__ == "__main__":
     print("running as main")
