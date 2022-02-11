@@ -20,7 +20,7 @@ public class FileConfig {
 
 	public static final String UE_USAGEs = "res/RQ2/ue/";
 	public static final String ALL_USAGEs = "res/RQ2/all/";
-	public static final String HANDLE_USAGES = "res/RQ2/handle/";
+	public static final String UNHANDLE_USAGES = "res/RQ2/unhandle/";
 
 	//.csv files
 	//for RQ1

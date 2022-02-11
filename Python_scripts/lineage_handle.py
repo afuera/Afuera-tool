@@ -17,6 +17,7 @@ with open(filename) as f:
 # you may also want to remove whitespace characters like `\n` at the end of each line
 content = [x.strip() for x in content]
 startsmall = 0
+filenames = []
 for row in content:
     #if startsmall > 10:
     #    break
@@ -29,14 +30,18 @@ for row in content:
         if year in ['2020']:
             sha256 = data[0]
             filename = packageName+'-'+year
-            print(filename)
-            apkname = 'res/RQ2/appTemp/'+filename+".apk"
-            # ue_name = 'res/RQ2/ue/'+filename+'.apk.txt'
-            # all_name = 'res/RQ2/all/'+filename+'.apk.txt'
-            handle_name = 'res/RQ2/handle/'+filename+'.apk.txt'
-            if not os.path.isfile(handle_name):
-                os.system("curl -o " + apkname + " -G -d apikey=" + key + " -d sha256=" + sha256 +
-                  " http://serval04.uni.lux/api/download")
-                os.system("java -cp target/Afuera-tool.jar afuera.exp.CheckUEAPIHandling "+apkname)
-                os.system("rm "+apkname)
-                startsmall += 1
+            filenames.append(filename)
+def checkUEAPIHandle(filename):
+    print(filename)
+    apkname = 'res/RQ2/appTemp/'+filename+".apk"
+    # ue_name = 'res/RQ2/ue/'+filename+'.apk.txt'
+    # all_name = 'res/RQ2/all/'+filename+'.apk.txt'
+    handle_name = 'res/RQ2/handle/'+filename+'.apk.txt'
+    if not os.path.isfile(handle_name):
+        os.system("curl -o " + apkname + " -G -d apikey=" + key + " -d sha256=" + sha256 +
+            " http://serval04.uni.lux/api/download")
+        os.system("java -cp target/Afuera-tool.jar afuera.exp.CheckUEAPIHandling "+apkname)
+        os.system("rm "+apkname)
+from multiprocessing import Pool
+pool = Pool(processes=5)
+pool.map(checkUEAPIHandle, filenames)

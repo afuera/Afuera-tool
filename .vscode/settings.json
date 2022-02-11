@@ -5,5 +5,5 @@
         "libs/sootclasses-trunk-jar-with-dependencies.jar",
         "libs/json-20211205.jar"
     ],
-    "java.project.exportJar.targetPath": "askUser",
+    "java.project.exportJar.targetPath": "target/",
 }

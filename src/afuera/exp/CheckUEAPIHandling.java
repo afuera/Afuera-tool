@@ -13,6 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import afuera.core.ThrowClause;
 import afuera.flow.config.FileConfig;
 import afuera.preprocess.apiparsing.SelfAPIList;
 import soot.Body;
@@ -85,7 +87,7 @@ public class CheckUEAPIHandling {
 	public CallGraph cg = null;
 	public double analyze(File app, Map<String,List<String>> ue_apis_exception) {
 		double ratio = 0d;
-		//List<String> ue_used = new ArrayList<String>();
+		List<String> ue_used = new ArrayList<String>();
 		//List<String> all_used= new ArrayList<String>();
         List<String> ue_unhandled = new ArrayList<String>();
 		G.reset();
@@ -129,16 +131,18 @@ public class CheckUEAPIHandling {
 								// 	//TODO: Is this Body b handled before invoked by a Component callback, or it handled this api by itself?
 								// }
 								if(ue_apis_exception.containsKey(methodSig)) {
-									// ue_used.add(methodSig);
+									ue_used.add(methodSig);
                                     /**
                                      * TODO: Check Handled.
                                      */
 									for(String thrownException : ue_apis_exception.get(methodSig)){
+										SootClass st = Scene.v().getSootClass(thrownException);
 										List<StackFrameHandle> path = new ArrayList<StackFrameHandle>();
-										path.add(new StackFrameHandle(b.getMethod(),stmt,thrownException));
-										if(!analyzeStackTrace(path)){
+										path.add(new StackFrameHandle(b.getMethod(),stmt,st));
+										if(hasBeenHandled(path)){
 											ue_unhandled.add(methodSig);
-										};
+											//break;
+										}
 									}
 								}
 							}
@@ -151,13 +155,14 @@ public class CheckUEAPIHandling {
 		PackManager.v().runPacks();
 		G.reset();
 		try {
-			write(FileConfig.HANDLE_USAGES+app.getName()+".txt",ue_unhandled);
+			write(FileConfig.UNHANDLE_USAGES+app.getName()+".txt",ue_unhandled);
 			//write(FileConfig.ALL_USAGEs+app.getName()+".txt",all_used);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//ratio = (double) ue_used.size() / all_used.size() ;
+		ratio = (double) ue_unhandled.size() / (double) ue_used.size();
+		System.out.println("Ratio of Unhandled/UE = " + ratio);// / all_used.size() ;
 		return ratio;
 	}
 	
@@ -173,34 +178,36 @@ public class CheckUEAPIHandling {
 	}
 	public Set<SootMethod> handlerMethods = new HashSet<SootMethod>();
 	public boolean isCallBack(StackFrameHandle caller){
+		//return caller.stackFrameMethod.getDeclaringClass().isLibraryClass();
 		return caller.stackFrameMethod.getName().startsWith("on");
 	}
 	public List<List<StackFrameHandle>> validStackTraces = new ArrayList<List<StackFrameHandle>>();
 	/**
 	 * 
 	 * @param path
-	 * @return true if UE_API usage is not handled, false if fully handled.
+	 * @return true if UE_API usage can reach callback, false otherwise.
 	 */
-	public boolean analyzeStackTrace(List<StackFrameHandle> path) { 
+	public boolean hasBeenHandled(List<StackFrameHandle> path) { 
 	//		if(hasDuplicate(path)) {
 	//			return;
 	//		}
 			StackFrameHandle caller = path.get(path.size()-1);
 	//		if(hasDuplicate(caller)) {
-			if(hasDuplicate(path)) {
-				return false;
-			}/*else {
-				this.touchedStackFrame.add(caller);
-			}*/
+			// if(hasDuplicate(path)) {
+			// 	return false;
+			// }/*else {
+			// 	this.touchedStackFrame.add(caller);
+			// }*/
+			System.out.println("Analyzing: "+caller.stackFrameMethod.getDeclaringClass().getName()+"."+caller.stackFrameMethod.getName());
 			if(caller.handledPassedException()) {
 				//this.handledCount+=caller.handledCount;
 				// this.handledCount += (caller.targetUnits.size()-caller.unHandledUnits.size());
-				handlerMethods.add(caller.stackFrameMethod);
-				return false;
+				// handlerMethods.add(caller.stackFrameMethod);
+				return true;
 			}
 			if(this.isCallBack(caller)) {
 				this.validStackTraces.add(path);
-				return true;
+				return false;
 			}
 			/**
 			 * If (caller,exception) is documented, no need to continue;
@@ -222,7 +229,7 @@ public class CheckUEAPIHandling {
 	//			}
 				List<StackFrameHandle> babyPath = new ArrayList<StackFrameHandle>(path);
 				babyPath.add(stackFrame);
-				if(this.analyzeStackTrace(babyPath) == true){
+				if(this.hasBeenHandled(babyPath) == true){
 					return true;
 				}
 			}
@@ -244,7 +251,7 @@ public class CheckUEAPIHandling {
 		public List<Unit> targetUnits = new ArrayList<Unit>();
 		public List<Unit> unHandledUnits = new ArrayList<Unit>();
 		public boolean isSignaler = false;
-		public String thrownException = null;
+		public SootClass thrownException = null;
 		/**
 		 * The very initial throw statement from the signaler.
 		 */
@@ -256,7 +263,7 @@ public class CheckUEAPIHandling {
 
 			this.computeUnHandledUnits();
 		}
-		public StackFrameHandle(SootMethod signalerMethod, InvokeStmt invkStmt, String thrownException) {
+		public StackFrameHandle(SootMethod signalerMethod, InvokeStmt invkStmt, SootClass thrownException) {
 			this.stackFrameMethod = signalerMethod;
 			this.targetUnits.add(invkStmt);
 			this.thrownException = thrownException;
@@ -325,7 +332,9 @@ public class CheckUEAPIHandling {
 //						System.out.println(trap.getEndUnit().toString());
 //						System.out.println(trap.getHandlerUnit().toString());
 						SootClass trapException = trap.getException();
-						if(this.thrownException.equals(trapException.getName())) {
+						// System.out.println("The trapping exception:" + trapException.getName());
+						// System.out.println("The thrown exception: "+ this.thrownException);
+						if(ThrowClause.isSubclass(thrownException, trapException)) {
 							//DEBUG
 //							System.out.println("Trapping Exception: "+trapException.getName());
 //							System.out.println("Throwing Exception: "+this.thrownException.getName());
