@@ -20,7 +20,7 @@ public class FileConfig {
 
 	public static final String UE_USAGEs = "res/RQ2/ue/";
 	public static final String ALL_USAGEs = "res/RQ2/all/";
-	public static final String UNHANDLE_USAGES = "res/RQ2/unhandle/";
+	public static final String HANDLE_USAGES = "res/RQ2/handle/";
 
 	//.csv files
 	//for RQ1
@@ -32,5 +32,7 @@ public class FileConfig {
 	public static final String STAT_EXCEPTION_BOXPLOT = API_LEVEL + "exceptionboxplot.csv";
 	public static final String STAT_PACKAGE_BOXPLOT = API_LEVEL + "packageboxplot.csv";
 	public static final String STAT_YEAR_BOXPLOT = API_LEVEL + "yearboxplot.csv";
+	public static final String STAT_HANDLE_EXCEPTION_BOXPLOT = API_LEVEL + "handleexceptionboxplot.csv";
+	public static final String STAT_HANDLE_PACKAGE_BOXPLOT = API_LEVEL + "handlepackageboxplot.csv";
 	
 }

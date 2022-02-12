@@ -155,7 +155,7 @@ public class CheckUEAPIHandling {
 		PackManager.v().runPacks();
 		G.reset();
 		try {
-			write(FileConfig.UNHANDLE_USAGES+app.getName()+".txt",ue_unhandled);
+			write(FileConfig.HANDLE_USAGES+app.getName()+".txt",ue_unhandled);
 			//write(FileConfig.ALL_USAGEs+app.getName()+".txt",all_used);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

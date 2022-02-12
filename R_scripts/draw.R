@@ -69,4 +69,10 @@ counts <- read.csv(file=paste(args[1],'yearboxplot29-19.csv',sep=""),check.names
 pdf(file="r_fig/boxplot-year-29-19.pdf",width=4,height=2)
 boxplot(counts, las=1, ylim=c(0,0.6),par(cex.axis=0.8,cex.lab=0.5,mar = c(3,3,0,0)+0.1), boxwex=0.5)
 
+counts <- read.csv(file=paste(args[1],'handleexceptionboxplot.csv',sep=""))  
+pdf(file="r_fig/boxplot-handle-exception.pdf")
+boxplot(counts, las = 2, ylim=c(0,0.8),par(cex.axis=1.8,cex.lab=0.5,mar = c(20,3,0,0)+0.1))
 
+counts <- read.csv(file=paste(args[1],'handlepackageboxplot.csv',sep=""))  
+pdf(file="r_fig/boxplot-handle-package.pdf")
+boxplot(counts, las = 2, ylim=c(0,0.8),par(cex.axis=1.8,cex.lab=0.5,mar = c(20,3,0,0)+0.1))
