@@ -16,6 +16,12 @@ import java.util.Set;
 
 import afuera.flow.config.FileConfig;
 
+/**
+ * I know, putting the order of the exception types in code is ugly. We should
+ * really read the order from file "res/api[versionNO.]/apiPerexception.csv", 
+ * instead of copy-pasting. What preventing me is we need to trim on the exception
+ * name to fit the paper page size, which requires handling of different name.
+ */
 public class BoxPlotHandleExceptionType {
 	public static void main(String args[]) throws IOException {
 		//String ues = "res/RQ2/ue/";
@@ -24,29 +30,41 @@ public class BoxPlotHandleExceptionType {
 		Map<String,List<Integer>> handle = v.count(FileConfig.HANDLE_USAGES);
 		Map<String,List<Integer>> ue = v.count(FileConfig.UE_USAGEs);
 		Map<String,List<Double>> map = new LinkedHashMap<>();
-		map.put("java.lang.IllegalArgumentException", new ArrayList<>());
-		map.put("java.lang.RuntimeException", new ArrayList<>());
-		map.put("java.lang.IllegalStateException", new ArrayList<>());
-		map.put("java.lang.NullPointerException", new ArrayList<>());
-		map.put("java.lang.UnsupportedOperationException", new ArrayList<>());
-		map.put("java.util.ConcurrentModificationException",new ArrayList<>());
-		//map.put("android.content.res.Resources$NotFoundException",0);
-		map.put("java.lang.ArrayIndexOutOfBoundsException", new ArrayList<>());
-		map.put("java.lang.IndexOutOfBoundsException", new ArrayList<>());
-		map.put("java.lang.AssertionError", new ArrayList<>());
-		map.put("java.lang.SecurityException", new ArrayList<>());
-		Iterator<String> iter = map.keySet().iterator();
-		for(; iter.hasNext(); ){
-			String key = iter.next();
-			List<Double> scoreList = map.get(key);
-			for(int i = 0; i < handle.get(key).size(); i++){
-				scoreList.add((double) handle.get(key).get(i) / (double) ue.get(key).get(i));
-			}
-		}
-		write(FileConfig.STAT_HANDLE_EXCEPTION_BOXPLOT,v.buildStringList(map));
+		int totalUE = total(ue);
+		int totalHandle = total(handle);
+		System.out.println("Percentage of handled UE-API over all UE-API usages: "+(double) totalHandle / (double) totalUE);
+		// map.put("java.lang.IllegalArgumentException", new ArrayList<>());
+		// map.put("java.lang.RuntimeException", new ArrayList<>());
+		// map.put("java.lang.IllegalStateException", new ArrayList<>());
+		// map.put("java.lang.NullPointerException", new ArrayList<>());
+		// map.put("java.lang.UnsupportedOperationException", new ArrayList<>());
+		// map.put("java.util.ConcurrentModificationException",new ArrayList<>());
+		// //map.put("android.content.res.Resources$NotFoundException",0);
+		// map.put("java.lang.ArrayIndexOutOfBoundsException", new ArrayList<>());
+		// map.put("java.lang.IndexOutOfBoundsException", new ArrayList<>());
+		// map.put("java.lang.AssertionError", new ArrayList<>());
+		// map.put("java.lang.SecurityException", new ArrayList<>());
+		// Iterator<String> iter = map.keySet().iterator();
+		// for(; iter.hasNext(); ){
+		// 	String key = iter.next();
+		// 	List<Double> scoreList = map.get(key);
+		// 	for(int i = 0; i < handle.get(key).size(); i++){
+		// 		scoreList.add((double) handle.get(key).get(i) / (double) ue.get(key).get(i));
+		// 	}
+		// }
+		// write(FileConfig.STAT_HANDLE_EXCEPTION_BOXPLOT,v.buildStringList(map));
 	}
 	public static BoxPlotHandleExceptionType v(){
 		return new BoxPlotHandleExceptionType();
+	}
+	public static int total(Map<String,List<Integer>> map){
+		int count = 0;
+		for(Iterator<List<Integer>> iter = map.values().iterator(); iter.hasNext(); ){
+			for(int c : iter.next()){
+				count += c;
+			}
+		}
+		return count;
 	}
 	Set<String> set = setBothFolderHave();
 	public Map<String,List<Integer>> count(String folderPath) throws IOException{
