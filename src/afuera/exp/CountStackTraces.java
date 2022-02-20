@@ -314,6 +314,7 @@ public class CountStackTraces {
 		int next = 1;
 		int line = 0;
 		try {
+			Set<String> all_exceptions = new HashSet<>();
 			for(Map.Entry<String,List<String>> entry : list) {
 				next = entry.getValue().size();
 				if(next > prev){
@@ -323,12 +324,24 @@ public class CountStackTraces {
 				}
 				for(String str : entry.getValue()){
 					if(line % 58 == 0){
+						all_exceptions.add(str);
 						bwSampled.write(" $$$  $$$  $$$  $$$  $$$ "+entry.getValue().size()+" $$$"+entry.getKey() + "-" + str);
 						bwSampled.newLine();
 					}
 					line++;
 					bw.write(entry.getKey() + "-" + str);
 					bw.newLine();
+				}
+			}
+			//Write all exceptions
+
+			for(Map.Entry<String,List<String>> entry : list) {
+				for(String str : entry.getValue()){
+					if(!all_exceptions.contains(str)){
+						all_exceptions.add(str);
+						bwSampled.write(" $$$  $$$  $$$  $$$  $$$ "+entry.getValue().size()+" $$$"+entry.getKey() + "-" + str);
+						bwSampled.newLine();
+					}
 				}
 			}
 		} catch (IOException e) {
