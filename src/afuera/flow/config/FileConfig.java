@@ -34,5 +34,8 @@ public class FileConfig {
 	public static final String STAT_YEAR_BOXPLOT = API_LEVEL + "yearboxplot.csv";
 	public static final String STAT_HANDLE_EXCEPTION_BOXPLOT = API_LEVEL + "handleexceptionboxplot.csv";
 	public static final String STAT_HANDLE_PACKAGE_BOXPLOT = API_LEVEL + "handlepackageboxplot.csv";
+
+	//for RQ0 and RQ1.5 and RQ3
+	public static final String GT = API_LEVEL + "GT";
 	
 }
