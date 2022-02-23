@@ -1,0 +1,9 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "libs/soot-infoflow-cmd-jar-with-dependencies.jar",
+        "libs/sootclasses-trunk-jar-with-dependencies.jar",
+        "libs/json-20211205.jar"
+    ],
+    "java.project.exportJar.targetPath": "target/",
+}

@@ -16,8 +16,6 @@ import afuera.flow.config.FileConfig;
 
 public class BoxPlotYears {
 	public static void main(String args[]) throws IOException {
-		String ues = "script/ue/";
-		String alls= "script/all/";
 		Map<String, Double> map = new LinkedHashMap<String, Double>();
 		boolean runitonce = true;
 		List<String> records = new ArrayList<String>();
@@ -26,7 +24,7 @@ public class BoxPlotYears {
 		double sumUESize = 0d;
 		double sumRatio = 0d;
 		int fileCount = 0;
-		for(File ue : new File(ues).listFiles()) {
+		for(File ue : new File(FileConfig.UE_USAGEs).listFiles()) {
 			String identifier = ue.getName().split("-")[0];
 			if(identifiers.contains(identifier))
 				continue;
@@ -54,12 +52,12 @@ public class BoxPlotYears {
 			for(Iterator<String> iter1 = map.keySet().iterator();iter1.hasNext();){
 				String year = iter1.next();
 				String yearFile = identifier+"-"+year+".apk.txt";
-				if(!new File(ues+yearFile).exists()) {
+				if(!new File(FileConfig.UE_USAGEs+yearFile).exists()) {
 					incomplete = true;
 					break;
 				}
-				double all_size = (double) read(alls+yearFile).size();
-				double ue_size = (double) read(ues+yearFile).size();
+				double all_size = (double) read(FileConfig.ALL_USAGEs+yearFile).size();
+				double ue_size = (double) read(FileConfig.UE_USAGEs+yearFile).size();
 				double ratio = ue_size / all_size;
 				if(year.equals("2020")){
 					sumUESize += ue_size;
@@ -82,7 +80,7 @@ public class BoxPlotYears {
 		System.out.println("Average UE-API used per app: "+sumUESize/fileCount);
 		System.out.println("Average API used per app: "+sumAllSize / fileCount);
 		System.out.println("Average ratio per app: "+sumRatio / fileCount);
-		write("paper/yearboxplot.csv", records);
+		write(FileConfig.STAT_YEAR_BOXPLOT, records);
 	}
 	public static List<String> read(String filePath) throws IOException{
 		List<String> apis = new ArrayList<String>();

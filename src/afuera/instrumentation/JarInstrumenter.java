@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import afuera.core.Signaler;
+import afuera.core.StackFrame;
 import heros.InterproceduralCFG;
 import soot.Local;
 import soot.Modifier;
@@ -41,6 +42,7 @@ public class JarInstrumenter implements IIPCManager{
 	public Set<String> dummyIfConditionMethod = new HashSet<String>();
 	private boolean isPreprocessing = false;
 	public String thrownExceptionName = null;
+	public List<StackFrame> stackTrace;
 	
 	@Override
 	public boolean isIPC(Stmt arg0, InterproceduralCFG<Unit, SootMethod> arg1) {

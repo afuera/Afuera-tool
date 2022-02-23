@@ -16,32 +16,34 @@ import afuera.flow.config.FileConfig;
 
 public class BoxPlotPackage {
 	public static void main(String args[]) throws IOException {
-		String ues = "script/ue/";
-		String alls= "script/all/";
+		//String ues = "script/ue/";
+		//String alls= "script/all/";
 		Map<String, Integer> map = new LinkedHashMap<String, Integer>();
 		boolean runitonce = true;
 		List<String> records = new ArrayList<String>();
 		int startSmall = 0;
-		for(File ue : new File(ues).listFiles()) {
+		for(File ue : new File(FileConfig.UE_USAGEs).listFiles()) {
 			/*
 			 * Put top 10 exception based on RQ1;
 			 */
 			map.put("android.widget", 0);
-			map.put("android.renderscript", 0);
 			map.put("android.app", 0);
 			map.put("android.view", 0);
 			map.put("android.content", 0);
-			map.put("android.webkit", 0);
-			map.put("android.provider", 0);
 			map.put("android.os", 0);
 			map.put("android.graphics", 0);
-			map.put("android.filterfw.core", 0);
+			map.put("android.provider", 0);
+			map.put("android.media",0);
+			map.put("android.renderscript", 0);
+			map.put("android.net", 0);
+			//map.put("android.webkit", 0);
+			//map.put("android.filterfw.core", 0);
 			if(ue.getName().endsWith("-2020.apk.txt")) {
 				startSmall++;
 				if(startSmall > 200)
 					break;
-				double all_size = (double) read(alls+ue.getName()).size();
-				double ue_size = (double) read(ues+ue.getName()).size();
+				//double all_size = (double) read(FileConfig.ALL_USAGEs+ue.getName()).size();
+				double ue_size = (double) read(FileConfig.UE_USAGEs+ue.getName()).size();
 				List<String> ueList = read(ue.getAbsolutePath());
 				List<String> ue_exceptionList = read(FileConfig.DOC_API_PACKAGE);
 				for(String ueMethod : ueList) {
@@ -74,7 +76,7 @@ public class BoxPlotPackage {
 				records.add(sb.toString());
 			}
 		}
-		write("paper/packageboxplot.csv", records);
+		write(FileConfig.STAT_PACKAGE_BOXPLOT, records);
 	}
 	public static List<String> read(String filePath) throws IOException{
 		List<String> apis = new ArrayList<String>();

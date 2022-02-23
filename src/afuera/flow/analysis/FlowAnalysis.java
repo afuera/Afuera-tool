@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import afuera.core.StackFrame;
 import afuera.flow.config.FileConfig;
 import afuera.flow.config.FlowConfig;
 import afuera.instrumentation.JarInstrumenter;
@@ -26,6 +30,7 @@ import soot.jimple.InvokeStmt;
 
 public class FlowAnalysis {
 	public JarInstrumenter jarInstrumenter = null;
+	public int sampledID = -1;
 	public void run(JarInstrumenter jarInstrumenter, String appPath) {
 		this.jarInstrumenter = jarInstrumenter;
 		IInfoflow infoflow = null;
@@ -44,34 +49,59 @@ public class FlowAnalysis {
 			//System.out.println("Taint analysis results");
 			//results.printResults();
 			MultiMap<ResultSinkInfo, ResultSourceInfo> res = results.getResults();
-			try {
-				BufferedWriter bw = new BufferedWriter(new FileWriter(new File(FileConfig.PARAMETER_THROW_OUTCOMES_TEMP
-						+this.jarInstrumenter.smAPI.getDeclaringClass()+"."+this.jarInstrumenter.smAPI.getName())));
-				bw.write(this.jarInstrumenter.apiSignature);
-				bw.newLine();
-				bw.write(this.jarInstrumenter.signalerSignature);
-				bw.newLine();
-				bw.write(this.jarInstrumenter.thrownExceptionName);
-				bw.newLine();
-				if(res!=null) {
-					for(ResultSinkInfo sink: res.keySet()) {
-						JInvokeStmt sinkStmt = (JInvokeStmt) sink.getStmt();
-						bw.write("Sink: "+sinkStmt.getInvokeExpr().getMethod().getName());
-						bw.newLine();
-						for(ResultSourceInfo source : res.get(sink)){
-							AssignStmt sourceStmt = (AssignStmt) source.getStmt();
-							bw.write("Source: "+sourceStmt.getInvokeExpr().getMethod().getName());
-							bw.newLine();
-						}
-					}
-				}
-				bw.close();
-			}catch(IOException e) {
-				e.printStackTrace();
-			}
-			
-			
+			this.writeGSON(res);
+		}else{
+			this.writeGSON(null);
 		}
+	}
+
+	private void writeGSON(MultiMap<ResultSinkInfo, ResultSourceInfo> res){
+		String fileName = "";
+		if(this.sampledID == -1){
+			fileName = FileConfig.PARAMETER_THROW_OUTCOMES + this.jarInstrumenter.smAPI.getDeclaringClass()+"."+this.jarInstrumenter.smAPI.getName();
+		}else{
+			fileName = FileConfig.MODULE_II_SAMPLED_ANALYSIS_OUTCOME + this.sampledID;
+		}
+		// if(new File(fileName).exists()){
+		// 	return;
+		// }
+
+		JSONObject json = new JSONObject();
+		json.put("UE-API",this.jarInstrumenter.apiSignature);
+		json.put("Signaler", this.jarInstrumenter.signalerSignature);
+		json.put("Unchecked Exception", this.jarInstrumenter.thrownExceptionName);
+			JSONArray stackTraceJSON = new JSONArray();
+			for(StackFrame sf : this.jarInstrumenter.stackTrace){
+				stackTraceJSON.put(sf.stackFrameMethod.getSignature());
+			}
+		json.put("Stack Trace", stackTraceJSON);
+		/**
+		 * Write relevant parameters.
+		 */
+			JSONArray assertedRelevantParameters = new JSONArray();
+		if(res!=null) {
+			for(ResultSinkInfo sink: res.keySet()) {
+				//JInvokeStmt sinkStmt = (JInvokeStmt) sink.getStmt();
+				//bw.write("Sink: "+sinkStmt.getInvokeExpr().getMethod().getName());
+				//bw.newLine();
+				for(ResultSourceInfo source : res.get(sink)){
+					AssignStmt sourceStmt = (AssignStmt) source.getStmt();
+					//bw.write("Source: "+sourceStmt.getInvokeExpr().getMethod().getName());
+					assertedRelevantParameters.put(sourceStmt.getInvokeExpr().getMethod().getName().split("_")[2]);
+					//bw.newLine();
+				}
+			}
+		}
+		json.put("Afuera_asserted_parameters", assertedRelevantParameters);
+		BufferedWriter bw;
+		try {
+			bw = new BufferedWriter(new FileWriter(new File(fileName)));
+			bw.write(json.toString(2));
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 	
 	public IInfoflow initInfoflow(String appPath) {

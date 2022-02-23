@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -62,7 +64,7 @@ public class CountStackTraces {
 	public void run(String args[], ProcessStackTrace processStackTrace) throws IOException {
 		G.reset();
 		Options.v().set_whole_program(true);
-		Options.v().set_allow_phantom_refs(true);;
+		Options.v().set_allow_phantom_refs(true); Options.v().setPhaseOption("cg.spark","enabled:true");
 		List<String> processPaths = new ArrayList<String>();		
 		Options.v().set_src_prec(Options.src_prec_class);
 		processPaths.add(FileConfig.FRAMEWORK_JAR);
@@ -103,7 +105,7 @@ public class CountStackTraces {
 		System.out.println("Total times an unchecked exception is trapped: "+this.handledCount);
 		rankAffectedAPIsByPackage(listOfPackageCount);
 		rankAffectedAPIsByException(this.listOfExceptionCount());
-		documentAPIWithException();
+		documentAPIWithException(true);
 		documentAPIWithPackage();
 		this.writedownAPIs(this.listOfAffectedAPIs(),FileConfig.UE_API);
 		
@@ -288,11 +290,75 @@ public class CountStackTraces {
 		}
 		return list;
 	}
+	public void documentAPIWithException(boolean sorted) throws IOException {
+		if(!sorted){
+			documentAPIWithException();
+			return;
+		}
+		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(FileConfig.DOC_API_EXCEPTION)));
+		BufferedWriter bwSampled = new BufferedWriter(new FileWriter(new File(FileConfig.SAMPLED_API_EXCEPTION)));
+		bwSampled.write("Officially_Documented $$$ Official_Document_URL $$$ Developer_Reported $$$ Developer_Report_URL $$$ Source_Checked $$$ Degree $$$ Signature");bwSampled.newLine();
+		HashMap<String,List<String>> hm = new HashMap<String,List<String>>();
+		for(API api: this.listOfAffectedAPIWithException()){
+			if(hm.containsKey(api.api.getSignature())){
+				hm.get(api.api.getSignature()).add(api.thrownException.getName());
+			}else{
+				List<String> l = new ArrayList<String>();
+				l.add(api.thrownException.getName());
+				hm.put(api.api.getSignature(), l);
+			}
+		}
+		List<Map.Entry<String,List<String>>> list = new LinkedList<>(hm.entrySet());
+		Collections.sort(list, (i1, i2) -> Integer.compare(i1.getValue().size(), i2.getValue().size()));
+		int prev = 1;
+		int next = 1;
+		int line = 0;
+		try {
+			Set<String> all_exceptions = new HashSet<>();
+			for(Map.Entry<String,List<String>> entry : list) {
+				next = entry.getValue().size();
+				if(next > prev){
+					System.out.println("APIs with "+prev+" Exceptions: "+line/prev);
+					prev = next;
+					line = 0;
+				}
+				for(String str : entry.getValue()){
+					if(line % 58 == 0){
+						all_exceptions.add(str);
+						bwSampled.write(" $$$  $$$  $$$  $$$  $$$ "+entry.getValue().size()+" $$$"+entry.getKey() + "-" + str);
+						bwSampled.newLine();
+					}
+					line++;
+					bw.write(entry.getKey() + "-" + str);
+					bw.newLine();
+				}
+			}
+			//Write all exceptions
+
+			for(Map.Entry<String,List<String>> entry : list) {
+				for(String str : entry.getValue()){
+					if(!all_exceptions.contains(str)){
+						all_exceptions.add(str);
+						bwSampled.write(" $$$  $$$  $$$  $$$  $$$ "+entry.getValue().size()+" $$$"+entry.getKey() + "-" + str);
+						bwSampled.newLine();
+					}
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		bw.close();
+		bwSampled.close();
+	}
+
 	
 	public void documentAPIWithException() throws IOException {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(FileConfig.DOC_API_EXCEPTION)));
 			try {
-				for(API api : this.listOfAffectedAPIWithException()) {
+				List<API> toSort = this.listOfAffectedAPIWithException();
+				toSort.sort((API api1, API api2) -> api1.api.getSignature().compareTo(api2.api.getSignature()));
+				for(API api : toSort) {
 					bw.write(api.api.getSignature()+"-"+api.thrownException.getName());
 					bw.newLine();
 				}

@@ -14,7 +14,11 @@ public class TaintProcessStackTrace extends ProcessStackTrace {
 	public void process(List<List<StackFrame>> validStackTraces) {
 		super.process(validStackTraces);
 //		int startSmall = 0;
-		for(List<StackFrame> st : this.purge(validStackTraces)) {
+		//for(List<StackFrame> st : this.purge(validStackTraces)) {
+			/**
+			 * Since major revision, we don't purge zero-parameterd APIs anymore, per request from reviewer.
+			 */
+		for(List<StackFrame> st : validStackTraces) {
 //			startSmall++;
 //			if(startSmall > 200)
 //				break;
@@ -59,6 +63,10 @@ public class TaintProcessStackTrace extends ProcessStackTrace {
 
 			//TODO: same api and same signaler and same throwstmt would mean one FlowAnalysis, to eliminate duplicates.
 			JarInstrumenter jarInstrumenter = new JarInstrumenter(apiSignature, signalerSignature, signalerPatchingChainPosition,st.get(0).thrownException.getName());
+			/**
+			 * We are adding stack trace to jarInstrumenter, so that we can document them in final json file.
+			 */
+			jarInstrumenter.stackTrace = st;
 			jarInstrumenter.updateJimpleForICC(true);
 			this.list.add(jarInstrumenter);
 		}
